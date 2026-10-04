@@ -147,10 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Bounding box: Highway 130 (West), Rowe Lane (South), East Wilco Hwy (North), Jakes Hill Rd (East)
-    const bounds = [
-      [30.485, -97.596], // SW: Hwy 130 & Rowe Lane
-      [30.522, -97.550]  // NE: East Wilco Hwy & Jakes Hill Rd
+    // Exact GPS coordinates:
+    // 30°28'56.2"N 97°33'43.1"W -> [30.482278, -97.561972]
+    // 30°29'05.6"N 97°35'03.3"W -> [30.484889, -97.584250]
+    // 30°30'01.7"N 97°34'48.0"W -> [30.500472, -97.580000]
+    // 30°29'43.8"N 97°33'37.9"W -> [30.495500, -97.560528]
+    const serviceCoordinates = [
+      [30.482278, -97.561972],
+      [30.484889, -97.584250],
+      [30.500472, -97.580000],
+      [30.495500, -97.560528]
     ];
 
     // Clean map instance
@@ -159,84 +165,31 @@ document.addEventListener('DOMContentLoaded', () => {
       zoomControl: true
     });
 
-    // OpenStreetMap standard tile layer (matching The Frame Shop implementation)
+    // OpenStreetMap standard tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18
     }).addTo(map);
 
-    // Zoom cleanly directly in on the corridor
-    map.fitBounds(bounds, { padding: [20, 20] });
+    // Single translucent overlay
+    const overlay = L.polygon(serviceCoordinates, {
+      color: '#2e7d32',
+      weight: 2.5,
+      fillColor: '#8bc34a',
+      fillOpacity: 0.35
+    }).addTo(map);
 
-    // Clean, subtle markers for the key communities (no polygon overlays)
-    const locations = {
-      rowelane: {
-        name: "The Estates at Rowe Lane",
-        lat: 30.4910,
-        lng: -97.5850,
-        desc: "Rowe Lane corridor near SH 130"
-      },
-      steeds: {
-        name: "Steeds Crossing",
-        lat: 30.5040,
-        lng: -97.5850,
-        desc: "Derby Day Ave & Steeds Crossing community"
-      },
-      rollinghills: {
-        name: "Rolling Hills",
-        lat: 30.5150,
-        lng: -97.5740,
-        desc: "Residential sector near East Wilco Hwy"
-      },
-      rollingmeadows: {
-        name: "Rolling Meadows",
-        lat: 30.4960,
-        lng: -97.5630,
-        desc: "Texas Meadows Dr towards Jakes Hill Rd"
-      }
-    };
+    overlay.bindPopup(`
+      <div class="map-popup-box">
+        <h4>⚡ The Turf Barber Service Area</h4>
+        <span class="popup-badge">Active Electric Service Route</span>
+        <p class="popup-info">Weekly & Bi-Weekly Mowing, Hard Edging & Bagging.</p>
+        <a href="#calculator" class="popup-link">Book Your Cut &rarr;</a>
+      </div>
+    `);
 
-    const markers = {};
-
-    const pinIcon = (name) => L.divIcon({
-      className: 'turf-map-marker',
-      html: `<div class="turf-pin-inner"><span class="pin-symbol">🌿</span><span class="pin-text">${name}</span></div>`,
-      iconSize: [130, 32],
-      iconAnchor: [65, 16]
-    });
-
-    Object.entries(locations).forEach(([key, loc]) => {
-      const marker = L.marker([loc.lat, loc.lng], { icon: pinIcon(loc.name) }).addTo(map);
-
-      marker.bindPopup(`
-        <div class="map-popup-box">
-          <h4>${loc.name}</h4>
-          <p class="popup-sub">${loc.desc}</p>
-          <span class="popup-badge">⚡ Active Electric Service Route</span>
-          <p class="popup-info">Weekly & Bi-Weekly Mowing, Hard Edging & Bagging.</p>
-          <a href="#calculator" class="popup-link">Book Your Cut &rarr;</a>
-        </div>
-      `);
-
-      markers[key] = { marker, lat: loc.lat, lng: loc.lng };
-    });
-
-    // Interactive button filtering to pan/zoom without overlays
-    const filterBtns = document.querySelectorAll('.map-filter-btn');
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const target = btn.getAttribute('data-target');
-        if (target === 'all') {
-          map.fitBounds(bounds, { padding: [20, 20] });
-        } else if (markers[target]) {
-          map.setView([markers[target].lat, markers[target].lng], 15);
-          markers[target].marker.openPopup();
-        }
-      });
-    });
+    // Zoom cleanly directly on the exact coordinates
+    map.fitBounds(overlay.getBounds(), { padding: [35, 35] });
   }
 
   initServiceAreaMap();
