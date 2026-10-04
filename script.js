@@ -147,11 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Centered on North & Northeast Pflugerville
+    // Centered on the Corridor bounded by Hwy 130, Rowe Lane, East Wilco Hwy, and Jakes Hill Rd
     const map = L.map('service-area-map', {
       scrollWheelZoom: false,
       zoomControl: true
-    }).setView([30.468, -97.598], 13);
+    }).setView([30.504, -97.572], 13);
 
     // OpenStreetMap standard tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -159,94 +159,118 @@ document.addEventListener('DOMContentLoaded', () => {
       maxZoom: 18
     }).addTo(map);
 
-    // Master North & Northeast Pflugerville Service Area Perimeter
+    // Master Perimeter Bounded by:
+    // West: Highway 130
+    // North: East Wilco Highway
+    // East: Jakes Hill Rd
+    // South: Rowe Lane
     const masterServiceBoundary = [
-      [30.4480, -97.6320],
-      [30.4620, -97.6300],
-      [30.4740, -97.6250],
-      [30.4880, -97.6180],
-      [30.4930, -97.6020],
-      [30.4930, -97.5850],
-      [30.4850, -97.5680],
-      [30.4650, -97.5640],
-      [30.4500, -97.5750],
-      [30.4450, -97.6000],
-      [30.4480, -97.6320]
+      [30.4850, -97.5950], // SW: Hwy 130 at Rowe Lane
+      [30.4980, -97.5940], // West: Along Hwy 130
+      [30.5120, -97.5910], // West: Along Hwy 130
+      [30.5230, -97.5880], // NW: Hwy 130 at East Wilco Hwy
+      [30.5220, -97.5750], // North: Along East Wilco Hwy
+      [30.5200, -97.5620], // North: Along East Wilco Hwy
+      [30.5180, -97.5500], // NE: East Wilco Hwy at Jakes Hill Rd
+      [30.5060, -97.5510], // East: Along Jakes Hill Rd
+      [30.4950, -97.5520], // East: Along Jakes Hill Rd
+      [30.4860, -97.5530], // SE: Jakes Hill Rd at Rowe Lane
+      [30.4875, -97.5680], // South: Along Rowe Lane
+      [30.4885, -97.5800], // South: Along Rowe Lane
+      [30.4850, -97.5950]  // Back to SW
     ];
 
     const masterPolygon = L.polygon(masterServiceBoundary, {
-      color: '#2e7d32',
+      color: '#1b5e20',
       fillColor: '#8bc34a',
       fillOpacity: 0.12,
-      weight: 2,
-      dashArray: '6, 6'
+      weight: 3,
+      dashArray: '8, 6'
     }).addTo(map);
 
     masterPolygon.bindPopup(`
       <div class="map-popup-box">
-        <h4>⚡ North & Northeast Pflugerville</h4>
-        <p class="popup-sub">Official All-Electric Service Route</p>
-        <span class="popup-badge">Priority Coverage Territory</span>
-        <p class="popup-info">Weekly & Bi-Weekly Mowing, Hard Edging & Bagging.</p>
+        <h4>⚡ The Turf Barber Priority Territory</h4>
+        <p class="popup-sub">Bounded by Highway 130, Rowe Lane, East Wilco Highway & Jakes Hill Road</p>
+        <span class="popup-badge">Active Weekly & Bi-Weekly Routes</span>
+        <p class="popup-info">Covering The Estates at Rowe Lane, Rolling Meadows, Steeds Crossing & Rolling Hills.</p>
         <a href="#calculator" class="popup-link">Book Your Cut &rarr;</a>
       </div>
     `);
 
-    // Specific Neighborhood Outlines & Details
+    // Four Bounding Road Corridor Labels
+    const roadBadges = [
+      { name: "Highway 130 (West)", lat: 30.5050, lng: -97.5925 },
+      { name: "East Wilco Hwy (North)", lat: 30.5220, lng: -97.5690 },
+      { name: "Jakes Hill Rd (East)", lat: 30.5020, lng: -97.5510 },
+      { name: "Rowe Lane (South)", lat: 30.4870, lng: -97.5740 }
+    ];
+
+    const roadLabelIcon = (text) => L.divIcon({
+      className: 'road-corridor-marker',
+      html: `<div style="background:#092313; color:#8bc34a; font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:10px; border:1px solid #8bc34a; box-shadow:0 2px 6px rgba(0,0,0,0.3); white-space:nowrap;">🛣️ ${text}</div>`,
+      iconSize: [120, 20],
+      iconAnchor: [60, 10]
+    });
+
+    roadBadges.forEach(r => {
+      L.marker([r.lat, r.lng], { icon: roadLabelIcon(r.name) }).addTo(map);
+    });
+
+    // Neighborhood Grids Inside the Bounded Quadrangle
     const neighborhoods = {
       rowelane: {
         name: "The Estates at Rowe Lane",
         label: "Estates at Rowe Lane",
-        center: [30.4715, -97.5990],
+        center: [30.4910, -97.5850],
         coords: [
-          [30.4785, -97.6080],
-          [30.4795, -97.5910],
-          [30.4670, -97.5890],
-          [30.4630, -97.5975],
-          [30.4665, -97.6080]
+          [30.4855, -97.5940],
+          [30.4965, -97.5930],
+          [30.4975, -97.5780],
+          [30.4880, -97.5770],
+          [30.4855, -97.5880]
         ],
-        desc: "Northeast Pflugerville • Rowe Lane corridor",
+        desc: "Along Rowe Lane between Hwy 130 and Hodde Ln",
         color: "#28a745"
-      },
-      rollingmeadows: {
-        name: "Rolling Meadows",
-        label: "Rolling Meadows",
-        center: [30.4670, -97.5810],
-        coords: [
-          [30.4745, -97.5890],
-          [30.4755, -97.5730],
-          [30.4600, -97.5720],
-          [30.4590, -97.5870]
-        ],
-        desc: "Northeast Pflugerville • Texas Meadows Dr & scenic lots",
-        color: "#1e7e34"
       },
       steeds: {
         name: "Steeds Crossing",
         label: "Steeds Crossing",
-        center: [30.4590, -97.6160],
+        center: [30.5040, -97.5850],
         coords: [
-          [30.4675, -97.6255],
-          [30.4685, -97.6100],
-          [30.4520, -97.6080],
-          [30.4510, -97.6220],
-          [30.4590, -97.6255]
+          [30.4980, -97.5930],
+          [30.5100, -97.5900],
+          [30.5090, -97.5790],
+          [30.4980, -97.5810]
         ],
-        desc: "North Pflugerville • Grand National Ave & FM 685",
+        desc: "Derby Day Ave & Steeds Crossing corridor",
         color: "#388e3c"
       },
       rollinghills: {
         name: "Rolling Hills",
         label: "Rolling Hills",
-        center: [30.4820, -97.5980],
+        center: [30.5150, -97.5740],
         coords: [
-          [30.4880, -97.6065],
-          [30.4890, -97.5915],
-          [30.4790, -97.5905],
-          [30.4780, -97.6055]
+          [30.5110, -97.5860],
+          [30.5210, -97.5840],
+          [30.5190, -97.5640],
+          [30.5100, -97.5660]
         ],
-        desc: "North Pflugerville • Scenic residential community",
+        desc: "Northern sector along East Wilco Highway",
         color: "#2e7d32"
+      },
+      rollingmeadows: {
+        name: "Rolling Meadows",
+        label: "Rolling Meadows",
+        center: [30.4960, -97.5630],
+        coords: [
+          [30.4880, -97.5750],
+          [30.5080, -97.5760],
+          [30.5070, -97.5530],
+          [30.4865, -97.5530]
+        ],
+        desc: "Texas Meadows Dr towards Jakes Hill Rd",
+        color: "#1e7e34"
       }
     };
 
@@ -264,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         color: n.color,
         weight: 2.5,
         fillColor: n.color,
-        fillOpacity: 0.28
+        fillOpacity: 0.32
       }).addTo(map);
 
       const marker = L.marker(n.center, {
@@ -276,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <h4>${n.name}</h4>
           <p class="popup-sub">${n.desc}</p>
           <span class="popup-badge">⚡ Active Electric Service Route</span>
-          <p class="popup-info">Weekly & Bi-Weekly Mowing, Edging, and Bagging.</p>
+          <p class="popup-info">Weekly & Bi-Weekly Mowing, Hard Edging & Bagging.</p>
           <a href="#calculator" class="popup-link">Get Instant Quote &rarr;</a>
         </div>
       `;
@@ -284,14 +308,14 @@ document.addEventListener('DOMContentLoaded', () => {
       poly.bindPopup(popupContent);
       marker.bindPopup(popupContent);
 
-      poly.on('mouseover', () => poly.setStyle({ fillOpacity: 0.5, weight: 3.5 }));
-      poly.on('mouseout', () => poly.setStyle({ fillOpacity: 0.28, weight: 2.5 }));
+      poly.on('mouseover', () => poly.setStyle({ fillOpacity: 0.55, weight: 3.5 }));
+      poly.on('mouseout', () => poly.setStyle({ fillOpacity: 0.32, weight: 2.5 }));
 
       neighborhoodLayers[key] = { poly, marker, center: n.center };
     });
 
-    // Fit map to outer boundary initially
-    map.fitBounds(masterPolygon.getBounds(), { padding: [25, 25] });
+    // Fit map to master perimeter
+    map.fitBounds(masterPolygon.getBounds(), { padding: [30, 30] });
 
     // Interactive button filtering
     const filterBtns = document.querySelectorAll('.map-filter-btn');
@@ -302,11 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const target = btn.getAttribute('data-target');
         if (target === 'all') {
-          map.fitBounds(masterPolygon.getBounds(), { padding: [25, 25] });
-        } else if (target === 'northpville') {
-          map.setView([30.468, -97.615], 14);
-        } else if (target === 'nepville') {
-          map.setView([30.470, -97.590], 14);
+          map.fitBounds(masterPolygon.getBounds(), { padding: [30, 30] });
         } else if (neighborhoodLayers[target]) {
           map.setView(neighborhoodLayers[target].center, 15);
           neighborhoodLayers[target].poly.openPopup();
