@@ -23,6 +23,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Cabinet+Grotesk:wght@700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Leaflet Map CSS (Same mapping tool used in The Frame Shop) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -559,9 +562,9 @@
       <div class="area-grid">
         <div class="area-text">
           <div class="section-tag">LOCAL NEIGHBORHOOD SERVICE</div>
-          <h2 class="section-title">Serving Pennymill Drive & Pflugerville</h2>
+          <h2 class="section-title">Serving North & Northeast Pflugerville</h2>
           <p class="lead-text">
-            Because our equipment is lightweight and battery-powered, Zaiyden operates on a tight neighborhood route centered around <strong>1209 Pennymill Drive, Pflugerville, TX 78660</strong>.
+            Because our equipment is lightweight and battery-powered, Zaiyden operates a dedicated route across <strong>North & Northeast Pflugerville</strong>, with weekly and bi-weekly service in <strong>The Estates at Rowe Lane</strong>, <strong>Rolling Meadows</strong>, <strong>Steeds Crossing</strong>, and <strong>Rolling Hills</strong>.
           </p>
 
           <div class="hours-card">
@@ -581,33 +584,31 @@
           </div>
 
           <div class="neighborhood-list">
-            <h4>Neighborhoods We Prioritize:</h4>
+            <h4>Featured Service Areas (Click to View on Map):</h4>
             <div class="tags-cluster">
-              <span class="tag">Pennymill Drive</span>
-              <span class="tag">Highland Park North</span>
-              <span class="tag">Falcon Pointe Radius</span>
-              <span class="tag">Heatherwilde Corridor</span>
-              <span class="tag">Pflugerville 78660</span>
+              <button type="button" class="tag map-filter-btn active" data-target="all">📍 All Service Areas</button>
+              <button type="button" class="tag map-filter-btn" data-target="rowelane">The Estates at Rowe Lane</button>
+              <button type="button" class="tag map-filter-btn" data-target="rollingmeadows">Rolling Meadows</button>
+              <button type="button" class="tag map-filter-btn" data-target="steeds">Steeds Crossing</button>
+              <button type="button" class="tag map-filter-btn" data-target="rollinghills">Rolling Hills</button>
+              <button type="button" class="tag map-filter-btn" data-target="northpville">North Pflugerville</button>
+              <button type="button" class="tag map-filter-btn" data-target="nepville">Northeast Pflugerville</button>
             </div>
           </div>
         </div>
 
         <div class="area-map-card">
-          <div class="map-graphic">
-            <div class="map-circle outer"></div>
-            <div class="map-circle middle"></div>
-            <div class="map-circle inner"></div>
-            <div class="map-pin">
-              <span class="pin-icon">📍</span>
-              <div class="pin-label">
-                <strong>1209 Pennymill Dr</strong>
-                <span>Pflugerville, TX 78660</span>
-              </div>
+          <div class="map-card-topbar">
+            <div class="map-status">
+              <span class="pulse-dot"></span>
+              <span>All-Electric Route Active</span>
             </div>
+            <span class="map-region-label">Pflugerville, TX 78660</span>
           </div>
+          <div id="service-area-map" class="service-map-canvas"></div>
           <div class="map-card-footer">
-            <span class="walking-badge">🚶‍♂️ Hyper-Local Walking & Wagon Route</span>
-            <p>Neighbors within walking distance receive priority booking and same-week recurring slots!</p>
+            <span class="walking-badge">⚡ Priority Electric Route Coverage</span>
+            <p>Interactive Service Map: Click any outlined neighborhood above or on the map to view route details.</p>
           </div>
         </div>
       </div>
@@ -695,6 +696,8 @@
     </div>
   </footer>
 
+  <!-- Leaflet Map JS (Same mapping tool used in The Frame Shop) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="script.js"></script>
 </body>
 </html>
