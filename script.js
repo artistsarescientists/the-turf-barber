@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // iOS and Android SMS URI compatibility
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const separator = isIOS ? '&' : '?';
-    const smsHref = `sms:7372164902${separator}body=${encodeURIComponent(message)}`;
+    const smsHref = `sms:5127667484${separator}body=${encodeURIComponent(message)}`;
 
     if (textBookingBtn) {
       textBookingBtn.setAttribute('href', smsHref);

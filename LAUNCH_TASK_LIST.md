@@ -16,10 +16,8 @@
 ## Phase 1: Communication & Dedicated Phone Setup
 > **Objective:** Keep personal numbers private, create a professional booking inbox, and enable easy text messaging on Zaiyden's phone.
 
-- [ ] **1.1 Set Up Google Voice Number** `[Together]`
-  - [ ] Determine if `737-216-4902` (printed on the flyer) is already active on a carrier or Google Voice.
-  - [ ] If setting up fresh: create/link a dedicated Google account (e.g., `theturfbarber.atx@gmail.com` or similar).
-  - [ ] Claim a local Pflugerville/Austin area code (`737` or `512`) via Google Voice.
+- [x] **1.1 Set Up Google Voice Number** `[Together]`
+  - [x] Claim a local Pflugerville/Austin area code via Google Voice: **(512) 766-7484**.
   - [ ] Install the **Google Voice App** on Zaiyden's phone and configure notifications.
 - [ ] **1.2 Professional Voicemail & Text Auto-Reply** `[Zaiyden]`
   - [ ] Record outgoing greeting:
@@ -56,7 +54,7 @@
     - The Edge-Up (+$10)
   - [ ] Add an **Interactive Price Calculator** (select yard type, auto-calculate total).
   - [ ] Add **Address / Neighborhood Radius Check** (centered around 1209 Pennymill Dr).
-  - [ ] Embed **"Text to Book" Direct Action Button** (pre-fills an SMS directly to 737-216-4902).
+  - [x] Embed **"Text to Book" Direct Action Button** (pre-fills an SMS directly to 512-766-7484).
   - [ ] Display operating hours (Mon/Tue/Wed/Fri 6–8 PM, Sat 9 AM–12 PM).
 - [ ] **3.2 Domain & Hosting** `[James]`
   - [ ] Register domain (e.g., `theturfbarber.com`, `turfbarberlawn.com`, or sub-domain) or deploy directly on Firebase Hosting / GitHub Pages.
@@ -77,8 +75,8 @@
     *🌿 Fresh Cuts. Zero Noise.*  
     *⚡ 100% All-Electric Lawn Care by your neighbor Zaiyden (16)*  
     *✂️ Front Fade $25 | Back Fade $25 | Full Cut $45*  
-    *📲 Text 737-216-4902 to book!*  
-    *📍 Pennymill Dr & Pflugerville, TX*  
+    *📲 Text 512-766-7484 to book!*  
+    *📍 Pflugerville, TX*  
     *🔗 [Website Link]*
 - [ ] **4.3 Launch Content (The First 3 Posts)** `[Zaiyden]`
   - [ ] **Post 1 (The Gear):** Photo/Reel of the all-electric setup (green mower, battery trimmer, blower) — *"No gas. No fumes. No loud engines waking up the block. Just clean, quiet cuts."*
@@ -99,7 +97,7 @@
   - [ ] *Distribution rule:* Place on front door handles/clips or hand directly to neighbors outside. *(Never place in official USPS mailboxes!)*
 - [ ] **5.3 Nextdoor & Facebook Neighborhood Launch Post** `[James / Zaiyden]`
   - [ ] Post in the neighborhood group (written from James's or Zaiyden's account):
-    > *"Hi neighbors! My 16-year-old stepson, Zaiyden, has officially launched his neighborhood lawn business: The Turf Barber! He uses 100% all-electric equipment, so there's zero engine roar, no gas fumes, and no loud machinery disrupting evening family dinners or quiet hours. He bags and hauls away all debris and does precision sidewalk edging. He has a few weekday evening (6–8 PM) and Saturday morning slots open. If you'd like to support a hardworking young neighbor, text him at 737-216-4902 or check out [Website]!"*
+    > *"Hi neighbors! My 16-year-old stepson, Zaiyden, has officially launched his neighborhood lawn business: The Turf Barber! He uses 100% all-electric equipment, so there's zero engine roar, no gas fumes, and no loud machinery disrupting evening family dinners or quiet hours. He bags and hauls away all debris and does precision sidewalk edging. He has a few weekday evening (6–8 PM) and Saturday morning slots open. If you'd like to support a hardworking young neighbor, text him at 512-766-7484 or check out [Website]!"*
 - [ ] **5.4 "First 5 Neighbors" Launch Offer** `[Zaiyden]`
   - [ ] Offer: *"Book a Full Cut ($45) this week, get The Edge-Up sidewalk trim FREE."* (Helps quickly gather 5 photo testimonials).
 - [ ] **5.5 Neighborhood Referral Engine** `[Zaiyden]`
