@@ -147,177 +147,81 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Centered on the Corridor bounded by Hwy 130, Rowe Lane, East Wilco Hwy, and Jakes Hill Rd
+    // Bounding box: Highway 130 (West), Rowe Lane (South), East Wilco Hwy (North), Jakes Hill Rd (East)
+    const bounds = [
+      [30.485, -97.596], // SW: Hwy 130 & Rowe Lane
+      [30.522, -97.550]  // NE: East Wilco Hwy & Jakes Hill Rd
+    ];
+
+    // Clean map instance
     const map = L.map('service-area-map', {
       scrollWheelZoom: false,
       zoomControl: true
-    }).setView([30.504, -97.572], 13);
+    });
 
-    // OpenStreetMap standard tile layer
+    // OpenStreetMap standard tile layer (matching The Frame Shop implementation)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18
     }).addTo(map);
 
-    // Master Perimeter Bounded by:
-    // West: Highway 130
-    // North: East Wilco Highway
-    // East: Jakes Hill Rd
-    // South: Rowe Lane
-    const masterServiceBoundary = [
-      [30.4850, -97.5950], // SW: Hwy 130 at Rowe Lane
-      [30.4980, -97.5940], // West: Along Hwy 130
-      [30.5120, -97.5910], // West: Along Hwy 130
-      [30.5230, -97.5880], // NW: Hwy 130 at East Wilco Hwy
-      [30.5220, -97.5750], // North: Along East Wilco Hwy
-      [30.5200, -97.5620], // North: Along East Wilco Hwy
-      [30.5180, -97.5500], // NE: East Wilco Hwy at Jakes Hill Rd
-      [30.5060, -97.5510], // East: Along Jakes Hill Rd
-      [30.4950, -97.5520], // East: Along Jakes Hill Rd
-      [30.4860, -97.5530], // SE: Jakes Hill Rd at Rowe Lane
-      [30.4875, -97.5680], // South: Along Rowe Lane
-      [30.4885, -97.5800], // South: Along Rowe Lane
-      [30.4850, -97.5950]  // Back to SW
-    ];
+    // Zoom cleanly directly in on the corridor
+    map.fitBounds(bounds, { padding: [20, 20] });
 
-    const masterPolygon = L.polygon(masterServiceBoundary, {
-      color: '#1b5e20',
-      fillColor: '#8bc34a',
-      fillOpacity: 0.12,
-      weight: 3,
-      dashArray: '8, 6'
-    }).addTo(map);
-
-    masterPolygon.bindPopup(`
-      <div class="map-popup-box">
-        <h4>⚡ The Turf Barber Priority Territory</h4>
-        <p class="popup-sub">Bounded by Highway 130, Rowe Lane, East Wilco Highway & Jakes Hill Road</p>
-        <span class="popup-badge">Active Weekly & Bi-Weekly Routes</span>
-        <p class="popup-info">Covering The Estates at Rowe Lane, Rolling Meadows, Steeds Crossing & Rolling Hills.</p>
-        <a href="#calculator" class="popup-link">Book Your Cut &rarr;</a>
-      </div>
-    `);
-
-    // Four Bounding Road Corridor Labels
-    const roadBadges = [
-      { name: "Highway 130 (West)", lat: 30.5050, lng: -97.5925 },
-      { name: "East Wilco Hwy (North)", lat: 30.5220, lng: -97.5690 },
-      { name: "Jakes Hill Rd (East)", lat: 30.5020, lng: -97.5510 },
-      { name: "Rowe Lane (South)", lat: 30.4870, lng: -97.5740 }
-    ];
-
-    const roadLabelIcon = (text) => L.divIcon({
-      className: 'road-corridor-marker',
-      html: `<div style="background:#092313; color:#8bc34a; font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:10px; border:1px solid #8bc34a; box-shadow:0 2px 6px rgba(0,0,0,0.3); white-space:nowrap;">🛣️ ${text}</div>`,
-      iconSize: [120, 20],
-      iconAnchor: [60, 10]
-    });
-
-    roadBadges.forEach(r => {
-      L.marker([r.lat, r.lng], { icon: roadLabelIcon(r.name) }).addTo(map);
-    });
-
-    // Neighborhood Grids Inside the Bounded Quadrangle
-    const neighborhoods = {
+    // Clean, subtle markers for the key communities (no polygon overlays)
+    const locations = {
       rowelane: {
         name: "The Estates at Rowe Lane",
-        label: "Estates at Rowe Lane",
-        center: [30.4910, -97.5850],
-        coords: [
-          [30.4855, -97.5940],
-          [30.4965, -97.5930],
-          [30.4975, -97.5780],
-          [30.4880, -97.5770],
-          [30.4855, -97.5880]
-        ],
-        desc: "Along Rowe Lane between Hwy 130 and Hodde Ln",
-        color: "#28a745"
+        lat: 30.4910,
+        lng: -97.5850,
+        desc: "Rowe Lane corridor near SH 130"
       },
       steeds: {
         name: "Steeds Crossing",
-        label: "Steeds Crossing",
-        center: [30.5040, -97.5850],
-        coords: [
-          [30.4980, -97.5930],
-          [30.5100, -97.5900],
-          [30.5090, -97.5790],
-          [30.4980, -97.5810]
-        ],
-        desc: "Derby Day Ave & Steeds Crossing corridor",
-        color: "#388e3c"
+        lat: 30.5040,
+        lng: -97.5850,
+        desc: "Derby Day Ave & Steeds Crossing community"
       },
       rollinghills: {
         name: "Rolling Hills",
-        label: "Rolling Hills",
-        center: [30.5150, -97.5740],
-        coords: [
-          [30.5110, -97.5860],
-          [30.5210, -97.5840],
-          [30.5190, -97.5640],
-          [30.5100, -97.5660]
-        ],
-        desc: "Northern sector along East Wilco Highway",
-        color: "#2e7d32"
+        lat: 30.5150,
+        lng: -97.5740,
+        desc: "Residential sector near East Wilco Hwy"
       },
       rollingmeadows: {
         name: "Rolling Meadows",
-        label: "Rolling Meadows",
-        center: [30.4960, -97.5630],
-        coords: [
-          [30.4880, -97.5750],
-          [30.5080, -97.5760],
-          [30.5070, -97.5530],
-          [30.4865, -97.5530]
-        ],
-        desc: "Texas Meadows Dr towards Jakes Hill Rd",
-        color: "#1e7e34"
+        lat: 30.4960,
+        lng: -97.5630,
+        desc: "Texas Meadows Dr towards Jakes Hill Rd"
       }
     };
 
-    const neighborhoodLayers = {};
+    const markers = {};
 
-    const turfPinIcon = (label) => L.divIcon({
+    const pinIcon = (name) => L.divIcon({
       className: 'turf-map-marker',
-      html: `<div class="turf-pin-inner"><span class="pin-symbol">🌿</span><span class="pin-text">${label}</span></div>`,
+      html: `<div class="turf-pin-inner"><span class="pin-symbol">🌿</span><span class="pin-text">${name}</span></div>`,
       iconSize: [130, 32],
-      iconAnchor: [65, 32]
+      iconAnchor: [65, 16]
     });
 
-    Object.entries(neighborhoods).forEach(([key, n]) => {
-      const poly = L.polygon(n.coords, {
-        color: n.color,
-        weight: 2.5,
-        fillColor: n.color,
-        fillOpacity: 0.32
-      }).addTo(map);
+    Object.entries(locations).forEach(([key, loc]) => {
+      const marker = L.marker([loc.lat, loc.lng], { icon: pinIcon(loc.name) }).addTo(map);
 
-      const marker = L.marker(n.center, {
-        icon: turfPinIcon(n.label)
-      }).addTo(map);
-
-      const popupContent = `
+      marker.bindPopup(`
         <div class="map-popup-box">
-          <h4>${n.name}</h4>
-          <p class="popup-sub">${n.desc}</p>
+          <h4>${loc.name}</h4>
+          <p class="popup-sub">${loc.desc}</p>
           <span class="popup-badge">⚡ Active Electric Service Route</span>
           <p class="popup-info">Weekly & Bi-Weekly Mowing, Hard Edging & Bagging.</p>
-          <a href="#calculator" class="popup-link">Get Instant Quote &rarr;</a>
+          <a href="#calculator" class="popup-link">Book Your Cut &rarr;</a>
         </div>
-      `;
+      `);
 
-      poly.bindPopup(popupContent);
-      marker.bindPopup(popupContent);
-
-      poly.on('mouseover', () => poly.setStyle({ fillOpacity: 0.55, weight: 3.5 }));
-      poly.on('mouseout', () => poly.setStyle({ fillOpacity: 0.32, weight: 2.5 }));
-
-      neighborhoodLayers[key] = { poly, marker, center: n.center };
+      markers[key] = { marker, lat: loc.lat, lng: loc.lng };
     });
 
-    // Fit map to master perimeter
-    map.fitBounds(masterPolygon.getBounds(), { padding: [30, 30] });
-
-    // Interactive button filtering
+    // Interactive button filtering to pan/zoom without overlays
     const filterBtns = document.querySelectorAll('.map-filter-btn');
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -326,10 +230,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const target = btn.getAttribute('data-target');
         if (target === 'all') {
-          map.fitBounds(masterPolygon.getBounds(), { padding: [30, 30] });
-        } else if (neighborhoodLayers[target]) {
-          map.setView(neighborhoodLayers[target].center, 15);
-          neighborhoodLayers[target].poly.openPopup();
+          map.fitBounds(bounds, { padding: [20, 20] });
+        } else if (markers[target]) {
+          map.setView([markers[target].lat, markers[target].lng], 15);
+          markers[target].marker.openPopup();
         }
       });
     });
